@@ -163,7 +163,8 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
     
     @objc func updateCategoryTitle(notification: Notification) {
         if let newTitle = notification.userInfo?["newTitle"] as? String {
-                navigationItem.title = newTitle
+            navigationItem.title = newTitle
+            contentCollection.reloadData()
         }
     }
 
@@ -182,6 +183,8 @@ extension ContentViewController: UICollectionViewDataSource {
             return cell
         }
         contentCell.configure()
+        var currentCategoryColorIndex = ColorAndTitleModel.shared.categoryButtonCounter
+        contentCell.wrapView.backgroundColor = ColorAndTitleModel.shared.categoryColors[currentCategoryColorIndex % 4]
         return cell
     }
 }

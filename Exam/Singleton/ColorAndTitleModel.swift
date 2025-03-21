@@ -18,6 +18,7 @@ final class ColorAndTitleModel {
     static let shared = ColorAndTitleModel()
     var backgroundColor: UIColor = .white
     let categories: [String] = ["Art", "Memes", "Music", "Films"]
+    let categoryColors: [UIColor] =  [.systemRed, .systemGreen, .systemBlue, .systemMint]
     var categoryButtonCounter: Int = .zero
     
     var redValue: Float = Constants.initialSliderValue

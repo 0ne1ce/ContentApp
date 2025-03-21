@@ -23,7 +23,6 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let categoryButtonRadius: CGFloat = 10
         static let categoryButtonOffsetTop: CGFloat = 15
         static let categoryButtonHeight: CGFloat = 35
-        static let categoryButtonColors: [UIColor] =  [.systemRed, .systemGreen, .systemBlue, .systemMint]
         static let colorSwitchTime: Double = 0.5
     }
     
@@ -137,10 +136,10 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
             ColorAndTitleModel.shared.sizeValue = Float(value)
         }
         
-
+        var currentCategoryColorIndex = ColorAndTitleModel.shared.categoryButtonCounter
         categoryButton.setTitle(viewModel.categoryButtonText, for: .normal)
         categoryButton.titleLabel?.textColor = viewModel.categoryButtonTextColor
-        categoryButton.backgroundColor = Constants.categoryButtonColors[ColorAndTitleModel.shared.categoryButtonCounter % 4]
+        categoryButton.backgroundColor = ColorAndTitleModel.shared.categoryColors[currentCategoryColorIndex % 4]
         categoryButton.layer.cornerRadius = Constants.categoryButtonRadius
         categoryButton.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
         categoryButton.setHeight(Constants.categoryButtonHeight)
@@ -182,14 +181,13 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         UIView.animate(
                 withDuration: Constants.colorSwitchTime,
                 animations: {[self] in
-                    categoryButton.backgroundColor = Constants
-                        .categoryButtonColors[newIndex % 4]
+                    categoryButton.backgroundColor = ColorAndTitleModel.shared.categoryColors[newIndex % 4]
                     },
                     completion: {
                         [weak self] _ in
                         self?.categoryButton.isEnabled = true
         })
-        let newTitle = ColorAndTitleModel.shared.categories[newIndex]
+        let newTitle = ColorAndTitleModel.shared.categories[newIndex % 4]
         NotificationCenter.default.post(
             name: NSNotification.Name(
                 "TitleChanged"

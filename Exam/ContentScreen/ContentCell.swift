@@ -27,7 +27,7 @@ final class ContentCell: UICollectionViewCell {
     // MARK: - Properties
     static let reuseIdentifier: String = "ContentCell"
     
-    private let wrapView: UIView = UIView()
+    let wrapView: UIView = UIView()
     private let titleLabel: UILabel = UILabel()
     private let descriptionLabel: UILabel = UILabel()
     private let startDateLabel: UILabel = UILabel()
