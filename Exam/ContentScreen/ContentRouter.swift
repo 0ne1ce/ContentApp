@@ -11,4 +11,10 @@ import UIKit
 final class ContentRouter: ContentRouterProtocol {
     // MARK: - Properties
     weak var view: UIViewController?
+    
+    // MARK: - Functions
+    func showSettingsScreen() {
+        let settingsVC = SettingsAssembly.build()
+        view?.present(settingsVC, animated: true)
+    }
 }

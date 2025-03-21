@@ -11,7 +11,7 @@ import UIKit
 final class ContentPresenter: ContentPresentationLogic {
     // MARK: - Constants
     private enum Constants {
-        
+        static let image: UIImage? = UIImage(systemName: "gearshape.fill")
     }
     
     // MARK: - Properties
@@ -20,9 +20,15 @@ final class ContentPresenter: ContentPresentationLogic {
     // MARK: - Public Fuctions
     func presentStart(response: ContentModels.LoadStart.Response) {
         let viewModel = ContentModels.LoadStart.ViewModel(
-            color: .lightGray
+            settingsImage: Constants.image,
+            settingsImageColor: .gray
         )
         
         view?.displayStart(viewModel: viewModel)
+    }
+    
+    func presentSettings(response: ContentModels.LoadSettings.Response) {
+        let viewModel = ContentModels.LoadSettings.ViewModel()
+        view?.displaySettings(viewModel: viewModel)
     }
 }

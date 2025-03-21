@@ -11,5 +11,5 @@ import UIKit
 protocol ContentPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: ContentModels.LoadStart.Response)
-    
+    func presentSettings(response: ContentModels.LoadSettings.Response)
 }

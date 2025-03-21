@@ -15,11 +15,25 @@ enum ContentModels {
         }
         
         struct Response {
+        }
+        
+        struct ViewModel {
+            var settingsImage: UIImage?
+            var settingsImageColor: UIColor
+        }
+    }
+    
+    enum LoadSettings {
+        struct Request {
+            
+        }
+        
+        struct Response {
             
         }
         
         struct ViewModel {
-            var color: UIColor
+            
         }
     }
 }

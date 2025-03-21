@@ -26,9 +26,12 @@ final class ContentInteractor: ContentBuisnessLogic {
     
     // MARK: - Public functions
     func loadStart(request: ContentModels.LoadStart.Request) {
-        let response = ContentModels.LoadStart.Response(
-
-        )
+        let response = ContentModels.LoadStart.Response()
         presenter.presentStart(response: response)
+    }
+    
+    func loadSettings(request: ContentModels.LoadSettings.Request) {
+        let response = ContentModels.LoadSettings.Response()
+        presenter.presentSettings(response: response)
     }
 }

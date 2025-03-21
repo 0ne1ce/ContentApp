@@ -11,4 +11,5 @@ import UIKit
 protocol ContentBuisnessLogic: AnyObject {
     // MARK: - Functions
     func loadStart(request: ContentModels.LoadStart.Request)
+    func loadSettings(request: ContentModels.LoadSettings.Request)
 }

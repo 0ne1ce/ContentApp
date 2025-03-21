@@ -10,4 +10,5 @@ import UIKit
 
 protocol ContentRouterProtocol: AnyObject {
     // MARK: - Functions
+    func showSettingsScreen()
 }
