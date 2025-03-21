@@ -34,7 +34,6 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     var panel: UIStackView = UIStackView()
     var titleLabel: UILabel = UILabel()
     var categoryButton: UIButton = UIButton(type: .custom)
-    var categoryButtonCounter: Int = 0
     
     let sliderRed: SettingsSlider = SettingsSlider()
     let sliderGreen: SettingsSlider = SettingsSlider()
@@ -105,6 +104,11 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         sliderBlue.SetTitle(title: viewModel.blueSliderTitle)
         sizeSlider.SetTitle(title: viewModel.sizeSliderTitle)
         
+        sliderRed.slider.value = ColorAndTitleModel.shared.redValue
+        sliderGreen.slider.value = ColorAndTitleModel.shared.greenValue
+        sliderBlue.slider.value = ColorAndTitleModel.shared.blueValue
+        sizeSlider.slider.value = ColorAndTitleModel.shared.sizeValue
+        
         for slider in [sliderRed, sliderGreen, sliderBlue, sizeSlider] {
             slider.SetMinMax(min: viewModel.sliderMinValue, max: viewModel.sliderMaxValue)
             slider.backgroundColor = ColorAndTitleModel.shared.backgroundColor
@@ -115,21 +119,28 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         panel.pinBottom(to: view, Constants.panelOffsetBottom)
         
         sliderRed.valueChanged = { [weak self] value in
+            ColorAndTitleModel.shared.redValue = Float(value)
             self?.changeBackgroundColor()
         }
         
         sliderGreen.valueChanged = { [weak self] value in
+            ColorAndTitleModel.shared.greenValue = Float(value)
             self?.changeBackgroundColor()
         }
         
         sliderBlue.valueChanged = { [weak self] value in
+            ColorAndTitleModel.shared.blueValue = Float(value)
             self?.changeBackgroundColor()
+        }
+        
+        sizeSlider.valueChanged = { [weak self] value in
+            ColorAndTitleModel.shared.sizeValue = Float(value)
         }
         
 
         categoryButton.setTitle(viewModel.categoryButtonText, for: .normal)
         categoryButton.titleLabel?.textColor = viewModel.categoryButtonTextColor
-        categoryButton.backgroundColor = Constants.categoryButtonColors[0]
+        categoryButton.backgroundColor = Constants.categoryButtonColors[ColorAndTitleModel.shared.categoryButtonCounter % 4]
         categoryButton.layer.cornerRadius = Constants.categoryButtonRadius
         categoryButton.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
         categoryButton.setHeight(Constants.categoryButtonHeight)
@@ -156,22 +167,35 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         sliderBlue.backgroundColor = currentColor
         sizeSlider.backgroundColor = currentColor
         ColorAndTitleModel.shared.backgroundColor = currentColor
-        NotificationCenter.default.post(name: NSNotification.Name("ColorChanged"), object: nil)
+        NotificationCenter.default.post(
+            name: NSNotification.Name(
+                "ColorChanged"
+            ),
+            object: nil
+        )
     }
     
     // MARK: - Actions
     @objc func categoryButtonPressed() {
-        categoryButtonCounter += 1
+        ColorAndTitleModel.shared.categoryButtonCounter += 1
+        let newIndex = ColorAndTitleModel.shared.categoryButtonCounter
         UIView.animate(
                 withDuration: Constants.colorSwitchTime,
                 animations: {[self] in
                     categoryButton.backgroundColor = Constants
-                        .categoryButtonColors[categoryButtonCounter % 4]
+                        .categoryButtonColors[newIndex % 4]
                     },
                     completion: {
                         [weak self] _ in
                         self?.categoryButton.isEnabled = true
         })
-        
+        let newTitle = ColorAndTitleModel.shared.categories[newIndex]
+        NotificationCenter.default.post(
+            name: NSNotification.Name(
+                "TitleChanged"
+            ),
+            object: nil,
+            userInfo: ["newTitle" : newTitle]
+        )
     }
 }

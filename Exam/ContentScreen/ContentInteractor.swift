@@ -11,7 +11,7 @@ import UIKit
 final class ContentInteractor: ContentBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        
+        static let initialCategory: String = "Art"
     }
     
     // MARK: - Properties
@@ -26,7 +26,7 @@ final class ContentInteractor: ContentBuisnessLogic {
     
     // MARK: - Public functions
     func loadStart(request: ContentModels.LoadStart.Request) {
-        let response = ContentModels.LoadStart.Response()
+        let response = ContentModels.LoadStart.Response(categoryTitle: Constants.initialCategory)
         presenter.presentStart(response: response)
     }
     

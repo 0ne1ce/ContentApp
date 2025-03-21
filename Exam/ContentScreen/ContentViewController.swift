@@ -57,6 +57,7 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
     
     // MARK: - Lifecyle
     override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = ColorAndTitleModel.shared.categories[ColorAndTitleModel.shared.categoryButtonCounter % 4]
         super.viewWillAppear(animated)
         loadStart()
     }
@@ -73,7 +74,7 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
     
     public func displayStart(viewModel: ContentModels.LoadStart.ViewModel) {
         view.backgroundColor = ColorAndTitleModel.shared.backgroundColor
-        navigationItem.title = ColorAndTitleModel.shared.title
+        navigationItem.title = viewModel.categoryTitle
 
         settingsButton.image = viewModel.settingsImage
         
@@ -84,7 +85,7 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
         navigationItem.rightBarButtonItem?.tintColor = viewModel.settingsImageColor
         
         configureCollection()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateBackgroundColor), name: NSNotification.Name("ColorChanged"), object: nil)
+        configureNotifications()
     }
     
     func displaySettings(viewModel: ContentModels.LoadSettings.ViewModel) {
@@ -107,6 +108,25 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
         contentCollection.backgroundColor = .clear
     }
     
+    private func configureNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(
+                updateBackgroundColor
+            ),
+            name: NSNotification.Name(
+                "ColorChanged"
+            ),
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateCategoryTitle),
+            name: NSNotification.Name("TitleChanged"),
+            object: nil
+        )
+    }
+    
     // MARK: - Actions
     @objc func settingsButtonPressed() {
         let request = ContentModels.LoadSettings.Request()
@@ -115,6 +135,12 @@ final class ContentViewController: UIViewController, ContentDisplayLogic {
     
     @objc func updateBackgroundColor() {
         view.backgroundColor = ColorAndTitleModel.shared.backgroundColor
+    }
+    
+    @objc func updateCategoryTitle(notification: Notification) {
+        if let newTitle = notification.userInfo?["newTitle"] as? String {
+                navigationItem.title = newTitle
+        }
     }
 
 }

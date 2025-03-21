@@ -20,6 +20,7 @@ final class ContentPresenter: ContentPresentationLogic {
     // MARK: - Public Fuctions
     func presentStart(response: ContentModels.LoadStart.Response) {
         let viewModel = ContentModels.LoadStart.ViewModel(
+            categoryTitle: response.categoryTitle,
             settingsImage: Constants.image,
             settingsImageColor: .gray
         )

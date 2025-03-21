@@ -15,9 +15,11 @@ enum ContentModels {
         }
         
         struct Response {
+            var categoryTitle: String
         }
         
         struct ViewModel {
+            var categoryTitle: String
             var settingsImage: UIImage?
             var settingsImageColor: UIColor
         }
